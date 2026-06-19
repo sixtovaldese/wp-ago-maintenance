@@ -21,8 +21,8 @@ class Template {
         $user_logo     = $settings['logo_url'] ?? '';
         $bg_image      = $settings['bg_image_url'] ?? '';
         $overlay       = max( 0, min( 100, intval( $settings['overlay_opacity'] ?? 60 ) ) ) / 100;
-        $ago_logo_url  = AGO_MAINTENANCE_URL . 'assets/img/agolab.webp';
-        $css_url       = AGO_MAINTENANCE_URL . 'assets/css/maintenance.css';
+        $ago_logo_url  = AGOMAINTENANCE_URL . 'assets/img/agolab.webp';
+        $css_url       = AGOMAINTENANCE_URL . 'assets/css/maintenance.css';
 
         ?><!DOCTYPE html>
 <html lang="<?php echo esc_attr( get_locale() ); ?>">

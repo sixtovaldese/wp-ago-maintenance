@@ -1,4 +1,3 @@
-/* aGo Maintenance Admin JS */
 (function () {
     'use strict';
 
@@ -10,9 +9,7 @@
 
     if (!saveBtn) return;
 
-    var settings = (typeof agoMaintenance !== 'undefined') ? agoMaintenance.settings : {};
-
-    // ───── Hydrate fields from saved settings ─────
+    var settings = (typeof agomaintenanceData !== 'undefined') ? agomaintenanceData.settings : {};
 
     function hydrate() {
         if (enabledToggle) {
@@ -20,8 +17,7 @@
             updateMasterCard();
         }
 
-
-        var modeRadios = document.querySelectorAll('input[name="ago_mode"]');
+        var modeRadios = document.querySelectorAll('input[name="agomaintenance_mode"]');
         modeRadios.forEach(function (radio) {
             radio.checked = (radio.value === (settings.mode || 'maintenance'));
         });
@@ -47,11 +43,9 @@
             countdownEl.value = settings.countdown_datetime;
         }
 
-        // Media fields
         setMedia('logo_url', settings.logo_url || '');
         setMedia('bg_image_url', settings.bg_image_url || '');
 
-        // Overlay opacity
         var overlay = document.getElementById('ago-overlay-opacity');
         if (overlay) {
             overlay.value = (settings.overlay_opacity != null) ? settings.overlay_opacity : 60;
@@ -92,13 +86,11 @@
         }
     }
 
-    // ───── Gather settings ─────
-
     function gatherSettings() {
         var data = {};
         data.enabled = enabledToggle ? enabledToggle.checked : false;
 
-        var checkedMode = document.querySelector('input[name="ago_mode"]:checked');
+        var checkedMode = document.querySelector('input[name="agomaintenance_mode"]:checked');
         data.mode = checkedMode ? checkedMode.value : 'maintenance';
 
         data.title              = (document.getElementById('ago-title') || {}).value || '';
@@ -114,20 +106,18 @@
         return data;
     }
 
-    // ───── Save settings ─────
-
     function saveSettings(callback) {
         var data = gatherSettings();
 
         statusBox.style.display = 'block';
         statusBox.className = '';
-        statusBox.textContent = 'Saving…';
+        statusBox.textContent = 'Saving...';
 
-        fetch(agoMaintenance.restUrl + '/settings', {
+        fetch(agomaintenanceData.restUrl + '/settings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-WP-Nonce': agoMaintenance.nonce,
+                'X-WP-Nonce': agomaintenanceData.nonce,
             },
             body: JSON.stringify(data),
         })
@@ -149,8 +139,6 @@
             statusBox.textContent = 'Error: ' + err.message;
         });
     }
-
-    // ───── Media uploader (WP) ─────
 
     function openMediaPicker(targetKey) {
         if (typeof wp === 'undefined' || !wp.media) return;
@@ -184,11 +172,8 @@
         });
     });
 
-    // Overlay live label
     var overlayInput = document.getElementById('ago-overlay-opacity');
     if (overlayInput) overlayInput.addEventListener('input', updateOverlayLabel);
-
-    // ───── Event listeners ─────
 
     if (enabledToggle) {
         enabledToggle.addEventListener('change', function () {
@@ -197,13 +182,12 @@
         });
     }
 
-
     saveBtn.addEventListener('click', function () { saveSettings(); });
 
     if (previewBtn) {
         previewBtn.addEventListener('click', function () {
             saveSettings(function () {
-                window.open(agoMaintenance.siteUrl + '?ago_maintenance_preview=1', '_blank');
+                window.open(agomaintenanceData.siteUrl + '?agomaintenance_preview=1', '_blank');
             });
         });
     }

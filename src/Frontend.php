@@ -12,10 +12,10 @@ class Frontend {
     }
 
     public static function maybe_show_maintenance(): void {
-        $settings = get_option( 'ago_maintenance_settings', [] );
+        $settings = get_option( 'agomaintenance_settings', [] );
 
         // Admin preview mode: show the page regardless of enabled state.
-        $is_preview = ! empty( $_GET['ago_maintenance_preview'] ) && current_user_can( 'manage_options' );
+        $is_preview = ! empty( $_GET['agomaintenance_preview'] ) && current_user_can( 'manage_options' );
 
         if ( ! $is_preview && empty( $settings['enabled'] ) ) {
             return;
@@ -63,7 +63,7 @@ class Frontend {
     }
 
     public static function admin_bar_indicator( \WP_Admin_Bar $bar ): void {
-        $settings = get_option( 'ago_maintenance_settings', [] );
+        $settings = get_option( 'agomaintenance_settings', [] );
         if ( empty( $settings['enabled'] ) ) {
             return;
         }
@@ -74,9 +74,9 @@ class Frontend {
             : __( 'Coming Soon ON', 'ago-maintenance' );
 
         $bar->add_node( [
-            'id'    => 'ago-maintenance-indicator',
+            'id'    => 'agomaintenance-indicator',
             'title' => '<span style="background:#d63638;color:#fff;padding:2px 8px;border-radius:3px;font-size:12px">' . esc_html( $label ) . '</span>',
-            'href'  => admin_url( 'admin.php?page=ago-maintenance' ),
+            'href'  => admin_url( 'admin.php?page=agomaintenance' ),
         ] );
     }
 

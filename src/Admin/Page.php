@@ -12,15 +12,14 @@ class Page {
         ?>
         <div class="wrap">
             <h1>
-                <img src="<?php echo esc_url( AGO_MAINTENANCE_URL . 'assets/img/agolab.webp' ); ?>" alt="aGo Lab" style="height:28px;width:auto;vertical-align:middle;margin-right:8px">
+                <img src="<?php echo esc_url( AGOMAINTENANCE_URL . 'assets/img/agolab.webp' ); ?>" alt="aGo Lab" style="height:28px;width:auto;vertical-align:middle;margin-right:8px">
                 <?php esc_html_e( 'aGo Maintenance', 'ago-maintenance' ); ?>
-                <span style="font-size:12px;color:#999;margin-left:8px">v<?php echo esc_html( AGO_MAINTENANCE_VERSION ); ?></span>
+                <span style="font-size:12px;color:#999;margin-left:8px">v<?php echo esc_html( AGOMAINTENANCE_VERSION ); ?></span>
             </h1>
 
             <div class="ago-layout">
                 <div class="ago-main">
 
-                    <!-- Master Toggle -->
                     <div class="card ago-card ago-master-toggle-card">
                         <div class="ago-master-toggle">
                             <div>
@@ -42,25 +41,23 @@ class Page {
                         </div>
                     </div>
 
-                    <!-- Settings -->
                     <div class="card ago-card">
                         <h2><?php esc_html_e( 'Settings', 'ago-maintenance' ); ?></h2>
 
                         <div id="ago-maint-status" style="display:none"></div>
 
-                        <!-- Mode -->
                         <div class="ago-section">
                             <h3><?php esc_html_e( 'Mode', 'ago-maintenance' ); ?></h3>
                             <div class="ago-mode-selector">
                                 <label class="ago-mode-option">
-                                    <input type="radio" name="ago_mode" value="maintenance" data-key="mode">
+                                    <input type="radio" name="agomaintenance_mode" value="maintenance" data-key="mode">
                                     <span class="ago-mode-box">
                                         <strong><?php esc_html_e( 'Maintenance', 'ago-maintenance' ); ?></strong>
                                         <span><?php esc_html_e( 'HTTP 503 + Retry-After, SEO friendly for temporary downtime', 'ago-maintenance' ); ?></span>
                                     </span>
                                 </label>
                                 <label class="ago-mode-option">
-                                    <input type="radio" name="ago_mode" value="coming_soon" data-key="mode">
+                                    <input type="radio" name="agomaintenance_mode" value="coming_soon" data-key="mode">
                                     <span class="ago-mode-box">
                                         <strong><?php esc_html_e( 'Coming Soon', 'ago-maintenance' ); ?></strong>
                                         <span><?php esc_html_e( 'HTTP 200, For new sites that are not yet launched', 'ago-maintenance' ); ?></span>
@@ -69,7 +66,6 @@ class Page {
                             </div>
                         </div>
 
-                        <!-- Content -->
                         <div class="ago-section">
                             <h3><?php esc_html_e( 'Content', 'ago-maintenance' ); ?></h3>
 
@@ -84,11 +80,9 @@ class Page {
                             </div>
                         </div>
 
-                        <!-- Appearance -->
                         <div class="ago-section">
                             <h3><?php esc_html_e( 'Appearance', 'ago-maintenance' ); ?></h3>
 
-                            <!-- Your logo -->
                             <div class="ago-field">
                                 <label><?php esc_html_e( 'Your Logo', 'ago-maintenance' ); ?></label>
                                 <p class="ago-toggle-desc"><?php esc_html_e( 'Shown large at the top of the page. PNG or SVG with transparent background recommended.', 'ago-maintenance' ); ?></p>
@@ -105,7 +99,6 @@ class Page {
                                 <input type="hidden" id="ago-logo-url" data-key="logo_url" value="">
                             </div>
 
-                            <!-- Background image -->
                             <div class="ago-field">
                                 <label><?php esc_html_e( 'Background Image', 'ago-maintenance' ); ?></label>
                                 <p class="ago-toggle-desc"><?php esc_html_e( 'Covers the entire screen. A dark overlay is applied on top so text stays readable.', 'ago-maintenance' ); ?></p>
@@ -141,7 +134,6 @@ class Page {
                             </div>
                         </div>
 
-                        <!-- Countdown -->
                         <div class="ago-section">
                             <h3><?php esc_html_e( 'Countdown Timer', 'ago-maintenance' ); ?></h3>
                             <p class="ago-toggle-desc"><?php esc_html_e( 'Set a target date/time to show a countdown on the maintenance page. Leave empty to hide.', 'ago-maintenance' ); ?></p>
@@ -151,7 +143,6 @@ class Page {
                             </div>
                         </div>
 
-                        <!-- IP Whitelist -->
                         <div class="ago-section">
                             <h3><?php esc_html_e( 'IP Whitelist', 'ago-maintenance' ); ?></h3>
                             <p class="ago-toggle-desc"><?php esc_html_e( 'One IP address per line. These IPs will bypass maintenance mode.', 'ago-maintenance' ); ?></p>
@@ -160,7 +151,6 @@ class Page {
                             </div>
                         </div>
 
-                        <!-- Actions -->
                         <div class="ago-actions">
                             <button id="ago-save-btn" class="button button-primary" type="button">
                                 <?php esc_html_e( 'Save Settings', 'ago-maintenance' ); ?>
@@ -173,10 +163,17 @@ class Page {
 
                 </div>
 
-                <!-- SIDEBAR -->
                 <div class="ago-sidebar">
 
-                    <!-- About -->
+                    <div class="card ago-card">
+                        <h3><?php esc_html_e( 'Quick links', 'ago-maintenance' ); ?></h3>
+                        <ul class="ago-features" style="list-style:none;padding:0;margin:0">
+                            <li><a href="https://uptimerobot.com/" target="_blank" rel="noopener"><?php esc_html_e( 'Uptime monitor (UptimeRobot)', 'ago-maintenance' ); ?></a></li>
+                            <li><a href="https://httpstatus.io/" target="_blank" rel="noopener"><?php esc_html_e( 'HTTP status checker', 'ago-maintenance' ); ?></a></li>
+                            <li><a href="https://search.google.com/search-console" target="_blank" rel="noopener"><?php esc_html_e( 'Google Search Console', 'ago-maintenance' ); ?></a></li>
+                        </ul>
+                    </div>
+
                     <div class="card ago-card">
                         <h3><?php esc_html_e( 'About', 'ago-maintenance' ); ?></h3>
                         <p style="font-size:13px;color:#666">
@@ -192,7 +189,20 @@ class Page {
                         </ul>
                     </div>
 
-                    <!-- Donation -->
+                    <div class="card ago-card">
+                        <h3 style="margin-top:0"><?php esc_html_e( 'Other aGo Lab plugins', 'ago-maintenance' ); ?></h3>
+                        <p style="font-size:13px;color:#666;margin-top:0"><?php esc_html_e( 'Free WordPress plugins from the same team. No upsell pressure.', 'ago-maintenance' ); ?></p>
+                        <ul class="ago-features">
+                            <li><strong>aGo Mail Pilot</strong>, <?php esc_html_e( 'Guided SMTP email delivery.', 'ago-maintenance' ); ?></li>
+                            <li><strong>aGo AI Chatbot</strong>, <?php esc_html_e( 'AI customer support widget for your site.', 'ago-maintenance' ); ?></li>
+                            <li><strong>aGo Legal</strong>, <?php esc_html_e( 'GDPR / LGPD / Chile Law 21.719 compliance toolkit.', 'ago-maintenance' ); ?></li>
+                            <li><strong>aGo Cleanup</strong>, <?php esc_html_e( 'Remove WordPress bloat and front-end clutter.', 'ago-maintenance' ); ?></li>
+                        </ul>
+                        <p>
+                            <a href="https://ago.cl/herramientas/" target="_blank" rel="noopener" class="button button-secondary" style="width:100%;text-align:center"><?php esc_html_e( 'Browse aGo Lab plugins', 'ago-maintenance' ); ?></a>
+                        </p>
+                    </div>
+
                     <div class="card ago-card ago-donation">
                         <h3><?php esc_html_e( 'Support Open Source', 'ago-maintenance' ); ?></h3>
                         <p style="font-size:13px;color:#666">
@@ -212,10 +222,9 @@ class Page {
                         </p>
                     </div>
 
-                    <!-- Footer with logo -->
                     <div class="ago-footer">
                         <a href="https://ago.cl" target="_blank" rel="noopener" class="ago-footer-logo">
-                            <img src="<?php echo esc_url( AGO_MAINTENANCE_URL . 'assets/img/agolab.webp' ); ?>" alt="aGo Lab" style="height:40px;width:auto">
+                            <img src="<?php echo esc_url( AGOMAINTENANCE_URL . 'assets/img/agolab.webp' ); ?>" alt="aGo Lab" style="height:40px;width:auto">
                         </a>
                         <p>
                             <?php
