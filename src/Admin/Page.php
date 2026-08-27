@@ -168,6 +168,7 @@ class Page {
                     <div class="card ago-card">
                         <h3><?php esc_html_e( 'Quick links', 'ago-maintenance' ); ?></h3>
                         <ul class="ago-features" style="list-style:none;padding:0;margin:0">
+                            <li><a href="https://ago.cl/herramientas/wordpress/ago-maintenance/docs" target="_blank" rel="noopener"><?php esc_html_e( 'Documentation', 'ago-maintenance' ); ?></a></li>
                             <li><a href="https://uptimerobot.com/" target="_blank" rel="noopener"><?php esc_html_e( 'Uptime monitor (UptimeRobot)', 'ago-maintenance' ); ?></a></li>
                             <li><a href="https://httpstatus.io/" target="_blank" rel="noopener"><?php esc_html_e( 'HTTP status checker', 'ago-maintenance' ); ?></a></li>
                             <li><a href="https://search.google.com/search-console" target="_blank" rel="noopener"><?php esc_html_e( 'Google Search Console', 'ago-maintenance' ); ?></a></li>

@@ -21,7 +21,6 @@ class Template {
         $user_logo     = $settings['logo_url'] ?? '';
         $bg_image      = $settings['bg_image_url'] ?? '';
         $overlay       = max( 0, min( 100, intval( $settings['overlay_opacity'] ?? 60 ) ) ) / 100;
-        $ago_logo_url  = AGOMAINTENANCE_URL . 'assets/img/agolab.webp';
         $css_url       = AGOMAINTENANCE_URL . 'assets/css/maintenance.css';
 
         ?><!DOCTYPE html>
@@ -102,19 +101,6 @@ class Template {
             </script>
             <?php endif; ?>
         </div>
-
-        <footer class="ago-maint-credit">
-            <?php
-            echo wp_kses_post(
-                sprintf(
-                    /* translators: 1: heart icon, 2: aGo Lab link */
-                    __( 'Developed with %1$s by %2$s', 'ago-maintenance' ),
-                    '<span aria-hidden="true">&#10084;</span>',
-                    '<a href="' . esc_url( 'https://ago.cl' ) . '" target="_blank" rel="noopener"><img src="' . esc_url( $ago_logo_url ) . '" alt="aGo Lab"><span>aGo Lab</span></a>'
-                )
-            );
-            ?>
-        </footer>
     </div>
 </body>
 </html>

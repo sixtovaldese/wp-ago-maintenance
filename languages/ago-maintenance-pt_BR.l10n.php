@@ -3,6 +3,7 @@ defined( 'ABSPATH' ) || exit;
 
 return ['x-generator'=>'aGo Maintenance','translation-revision-date'=>'2026-06-08','plural-forms'=>'nplurals=2; plural=n > 1;','project-id-version'=>'aGo Maintenance 1.0.0','language'=>'pt-BR','messages'=>[
 'Quick links'=>'Links rápidos',
+'Documentation'=>'Documentação',
 'Uptime monitor (UptimeRobot)'=>'Monitor de disponibilidade (UptimeRobot)',
 'HTTP status checker'=>'Verificador de status HTTP',
 'Google Search Console'=>'Google Search Console',
