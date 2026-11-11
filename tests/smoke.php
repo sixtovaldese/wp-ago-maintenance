@@ -135,6 +135,14 @@ class AgoMaintenanceSmoke {
         $r = $get( [ 'X-Forwarded-For' => '198.51.100.9', 'CF-Connecting-IP' => '198.51.100.9', 'X-Real-IP' => '198.51.100.9' ] );
         self::check( 'una IP de la lista en cabeceras no salta el mantenimiento', 503 === wp_remote_retrieve_response_code( $r ), (string) wp_remote_retrieve_response_code( $r ) );
 
+        foreach ( [ '/?agomaintenance_smoke=1&x=/login/', '/?agomaintenance_smoke=2&r=/wp-admin', '/sample-page/admin/?agomaintenance_smoke=3' ] as $path ) {
+            $r = wp_remote_get( 'http://nginx' . $path, [ 'headers' => [ 'Host' => $host, 'X-Forwarded-Proto' => 'https' ], 'redirection' => 0, 'timeout' => 15 ] );
+            self::check( "{$path} no salta el mantenimiento", 503 === wp_remote_retrieve_response_code( $r ), (string) wp_remote_retrieve_response_code( $r ) );
+        }
+
+        $r = wp_remote_get( 'http://nginx/login/?agomaintenance_smoke=4', [ 'headers' => [ 'Host' => $host, 'X-Forwarded-Proto' => 'https' ], 'redirection' => 0, 'timeout' => 15 ] );
+        self::check( '/login/ sigue llevando al acceso', 503 !== wp_remote_retrieve_response_code( $r ), (string) wp_remote_retrieve_response_code( $r ) );
+
         $r = $get();
         $body = wp_remote_retrieve_body( $r );
         self::check( 'la pagina carga maintenance.css', str_contains( $body, 'assets/css/maintenance.css' ) );

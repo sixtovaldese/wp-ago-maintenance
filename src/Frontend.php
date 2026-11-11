@@ -39,8 +39,7 @@ class Frontend {
                 return;
             }
 
-            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-            if ( preg_match( '#/(wp-admin|wp-login\.php|admin|login)(/|$|\?)#i', $request_uri ) ) {
+            if ( self::is_login_shortcut() ) {
                 return;
             }
         }
@@ -120,6 +119,32 @@ class Frontend {
             'title' => '<span style="background:#d63638;color:#fff;padding:2px 8px;border-radius:3px;font-size:12px">' . esc_html( $label ) . '</span>',
             'href'  => admin_url( 'admin.php?page=agomaintenance' ),
         ] );
+    }
+
+    /**
+     * Whether the request is one of the WordPress shortcuts to the login screen
+     * (/admin, /login, /wp-admin, /dashboard), which core redirects later on
+     * template_redirect. Only the exact path counts: the query string and
+     * longer paths that merely contain those words keep the maintenance page.
+     */
+    private static function is_login_shortcut(): bool {
+        if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+            return false;
+        }
+
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only the path is kept and it is sanitized below.
+        $path = wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+        if ( ! is_string( $path ) ) {
+            return false;
+        }
+        $path = sanitize_text_field( rawurldecode( $path ) );
+
+        $home = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
+        if ( '' !== $home && 0 === strpos( $path, $home ) ) {
+            $path = substr( $path, strlen( $home ) );
+        }
+
+        return in_array( strtolower( trim( $path, '/' ) ), [ 'admin', 'login', 'wp-admin', 'dashboard', 'wp-login.php' ], true );
     }
 
     /**
