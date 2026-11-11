@@ -111,7 +111,7 @@
 
         statusBox.style.display = 'block';
         statusBox.className = '';
-        statusBox.textContent = 'Saving...';
+        statusBox.textContent = agomaintenanceData.i18n.saving;
 
         fetch(agomaintenanceData.restUrl + '/settings', {
             method: 'POST',
@@ -126,17 +126,17 @@
             if (resp.saved) {
                 settings = resp.settings;
                 statusBox.className = 'success';
-                statusBox.textContent = 'Settings saved.';
+                statusBox.textContent = agomaintenanceData.i18n.saved;
             } else {
                 statusBox.className = 'error';
-                statusBox.textContent = 'Could not save settings.';
+                statusBox.textContent = agomaintenanceData.i18n.error;
             }
             setTimeout(function () { statusBox.style.display = 'none'; }, 3000);
             if (callback) callback();
         })
         .catch(function (err) {
             statusBox.className = 'error';
-            statusBox.textContent = 'Error: ' + err.message;
+            statusBox.textContent = agomaintenanceData.i18n.error + ' ' + err.message;
         });
     }
 
@@ -144,8 +144,8 @@
         if (typeof wp === 'undefined' || !wp.media) return;
 
         var frame = wp.media({
-            title: 'Select image',
-            button: { text: 'Use this image' },
+            title: agomaintenanceData.i18n.selectImage,
+            button: { text: agomaintenanceData.i18n.useImage },
             library: { type: 'image' },
             multiple: false,
         });
@@ -187,7 +187,7 @@
     if (previewBtn) {
         previewBtn.addEventListener('click', function () {
             saveSettings(function () {
-                window.open(agomaintenanceData.siteUrl + '?agomaintenance_preview=1', '_blank');
+                window.open(agomaintenanceData.previewUrl, '_blank');
             });
         });
     }

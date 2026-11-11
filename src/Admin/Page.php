@@ -178,7 +178,7 @@ class Page {
                     <div class="card ago-card">
                         <h3><?php esc_html_e( 'About', 'ago-maintenance' ); ?></h3>
                         <p style="font-size:13px;color:#666">
-                            <?php esc_html_e( 'One-click maintenance mode and coming soon page. Admins bypass automatically.', 'ago-maintenance' ); ?>
+                            <?php esc_html_e( 'One-click maintenance mode and coming soon page. Logged-in users who can edit posts keep seeing the site.', 'ago-maintenance' ); ?>
                         </p>
                         <ul class="ago-features">
                             <li><?php esc_html_e( 'Toggle maintenance on/off instantly', 'ago-maintenance' ); ?></li>

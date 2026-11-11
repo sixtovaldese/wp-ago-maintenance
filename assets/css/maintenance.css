@@ -114,3 +114,20 @@ h1 {
     .ago-countdown-unit span { font-size: 30px; }
     .ago-maint-wrap { padding: 32px 16px 16px; }
 }
+
+body.ago-has-bg {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+body.ago-has-bg::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: var(--ago-bg);
+    opacity: var(--ago-overlay);
+    z-index: 0;
+    pointer-events: none;
+}
+body.ago-has-bg .ago-maint-wrap { position: relative; z-index: 1; }

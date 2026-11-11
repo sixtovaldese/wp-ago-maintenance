@@ -8,20 +8,22 @@ class Plugin {
 
     private static ?self $instance = null;
 
-    /** Default settings. */
-    public const DEFAULTS = [
-        'enabled'            => false,
-        'mode'               => 'maintenance',
-        'title'              => 'Under Maintenance',
-        'message'            => 'We are performing scheduled maintenance. We will be back shortly.',
-        'bg_color'           => '#1d2327',
-        'text_color'         => '#ffffff',
-        'countdown_datetime' => '',
-        'ip_whitelist'       => '',
-        'logo_url'           => '',
-        'bg_image_url'       => '',
-        'overlay_opacity'    => 60,
-    ];
+    /** @return array<string, mixed> Default settings, with texts in the site language. */
+    public static function defaults(): array {
+        return [
+            'enabled'            => false,
+            'mode'               => 'maintenance',
+            'title'              => __( 'Under Maintenance', 'ago-maintenance' ),
+            'message'            => __( 'We are performing scheduled maintenance. We will be back shortly.', 'ago-maintenance' ),
+            'bg_color'           => '#1d2327',
+            'text_color'         => '#ffffff',
+            'countdown_datetime' => '',
+            'ip_whitelist'       => '',
+            'logo_url'           => '',
+            'bg_image_url'       => '',
+            'overlay_opacity'    => 60,
+        ];
+    }
 
     public static function instance(): self {
         if ( null === self::$instance ) {
@@ -31,7 +33,6 @@ class Plugin {
     }
 
     private function __construct() {
-        add_action( 'init', [ $this, 'load_textdomain' ] );
         add_action( 'admin_menu', [ $this, 'register_admin_menu' ] );
         add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
@@ -39,21 +40,28 @@ class Plugin {
         Frontend::init();
     }
 
-    /* ───── Textdomain ───── */
-
-    public function load_textdomain(): void {
-        load_plugin_textdomain( 'ago-maintenance', false, dirname( plugin_basename( AGOMAINTENANCE_FILE ) ) . '/languages' );
-    }
-
     /* ───── Admin menu (smart pattern) ───── */
 
+    private const MENU_SLUG = 'agomaintenance-tools';
+
     public function register_admin_menu(): void {
-        if ( empty( $GLOBALS['admin_page_hooks']['agolab-tools'] ) ) {
+        /*
+         * Other plugins from the same author may already have added a shared
+         * parent menu. When one is there the page goes under it, so the
+         * dashboard does not grow a second top level entry for the same set of
+         * tools. When there is none, this plugin creates its own parent under
+         * its own prefix and never defines the shared slug.
+         */
+        $parent = 'agolab-tools';
+
+        if ( empty( $GLOBALS['admin_page_hooks'][ $parent ] ) ) {
+            $parent = self::MENU_SLUG;
+
             add_menu_page(
                 __( 'aGo Tools', 'ago-maintenance' ),
                 __( 'aGo Tools', 'ago-maintenance' ),
                 'manage_options',
-                'agolab-tools',
+                $parent,
                 '__return_null',
                 'dashicons-hammer',
                 81
@@ -61,7 +69,7 @@ class Plugin {
         }
 
         add_submenu_page(
-            'agolab-tools',
+            $parent,
             __( 'aGo Maintenance', 'ago-maintenance' ),
             __( 'Maintenance', 'ago-maintenance' ),
             'manage_options',
@@ -69,7 +77,7 @@ class Plugin {
             [ Admin\Page::class, 'render' ]
         );
 
-        remove_submenu_page( 'agolab-tools', 'agolab-tools' );
+        remove_submenu_page( $parent, $parent );
     }
 
     /* ───── REST routes ───── */
@@ -99,7 +107,7 @@ class Plugin {
 
     public function handle_save_settings( \WP_REST_Request $request ): \WP_REST_Response {
         $input    = $request->get_json_params();
-        $defaults = self::DEFAULTS;
+        $defaults = self::defaults();
         $settings = [];
 
         $settings['enabled']            = ! empty( $input['enabled'] );
@@ -148,7 +156,20 @@ class Plugin {
             'restUrl'  => rest_url( 'agomaintenance/v1' ),
             'nonce'    => wp_create_nonce( 'wp_rest' ),
             'settings' => self::get_settings(),
-            'siteUrl'  => home_url( '/' ),
+            'previewUrl' => add_query_arg(
+                [
+                    'agomaintenance_preview' => '1',
+                    '_wpnonce'               => wp_create_nonce( 'agomaintenance_preview' ),
+                ],
+                home_url( '/' )
+            ),
+            'i18n'     => [
+                'saving'      => __( 'Saving...', 'ago-maintenance' ),
+                'saved'       => __( 'Settings saved.', 'ago-maintenance' ),
+                'error'       => __( 'Could not save settings.', 'ago-maintenance' ),
+                'selectImage' => __( 'Select image', 'ago-maintenance' ),
+                'useImage'    => __( 'Use this image', 'ago-maintenance' ),
+            ],
         ] );
     }
 
@@ -157,6 +178,6 @@ class Plugin {
     /** @return array<string, mixed> */
     public static function get_settings(): array {
         $saved = get_option( 'agomaintenance_settings', [] );
-        return wp_parse_args( $saved, self::DEFAULTS );
+        return wp_parse_args( $saved, self::defaults() );
     }
 }
